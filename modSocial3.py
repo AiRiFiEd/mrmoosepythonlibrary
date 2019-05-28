@@ -8,16 +8,7 @@ Created on Mon May  6 01:20:37 2019
 import twitter
 import json
 import tweepy
-
 import modGlobal3
-
-
-
-
-
-
-
-
 
 WORLD_ID = {'WORLD':1,
             'EUROPE': 24865675,
