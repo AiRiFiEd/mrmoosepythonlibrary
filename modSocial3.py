@@ -9,6 +9,14 @@ import twitter
 import json
 import tweepy
 
+import modGlobal3
+
+
+
+
+
+
+
 
 
 WORLD_ID = {'WORLD':1,
@@ -17,11 +25,6 @@ WORLD_ID = {'WORLD':1,
             'SINGAPORE':1062617,
             'MALAYSIA':23424901}
 
-
-
-
-
-
 def get_twitter(consumer_key = None,
                 consumer_secret = None,
                 access_token = None,
@@ -29,22 +32,22 @@ def get_twitter(consumer_key = None,
     if consumer_key:
         str_consumer_key = consumer_key
     else:
-        str_consumer_key = CONSUMER_KEY
+        str_consumer_key = modGlobal3.CONSUMER_KEY
     
     if consumer_secret:
         str_consumer_secret = consumer_secret
     else:
-        str_consumer_secret = CONSUMER_SECRET
+        str_consumer_secret = modGlobal3.CONSUMER_SECRET
         
     if access_token:
         str_access_token = access_token
     else:
-        str_access_token = ACCESS_TOKEN
+        str_access_token = modGlobal3.ACCESS_TOKEN
         
     if access_secret:
         str_access_secret = access_secret
     else:
-        str_access_secret = ACCESS_SECRET
+        str_access_secret = modGlobal3.ACCESS_SECRET
         
 #    auth = twitter.oauth.OAuth(token = str_access_token,
 #                               token_secret = str_access_secret,
