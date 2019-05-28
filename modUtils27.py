@@ -1,0 +1,106 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Dec 21 23:20:09 2018
+
+@author: LIM YUAN QING
+"""
+
+import win32com.client
+import pandas as pd
+import cchardet
+import zipfile
+import os
+import copy
+
+def merge_dicts(dict1, dict2):
+    '''
+    Merge 2 dictionaries.
+    
+    Parameters
+    ----------
+    dict1 : dictionary
+        First of 2 dictionaries to be merged
+    dict2 : dictionary
+        Second of 2 dictionaries to be merged
+    
+    Returns
+    -------
+    dictionary
+        dictionary that is the result of merging `dict1` and `dict2` 
+    
+    Notes
+    -----
+    Creates a deep copy of `dict1` and update it with `dict2`.
+    '''
+    combined = copy.deepcopy(dict1)
+    combined.update(dict2)    
+    return combined
+
+def get_filepaths(str_directory):
+    return [os.path.abspath(file) for file in os.listdir(str_directory)]
+
+def zip_file(str_zip_full_path, str_file_full_path):
+    try:
+        str_zip_full_path_new = str_zip_full_path + ('.zip' not in str_zip_full_path) * '.zip'
+        obj_zipfile = zipfile.ZipFile(str_zip_full_path_new, 'a', zipfile.ZZIP_DEFLATED)
+        obj_zipfile.write(str_file_full_path, str_file_full_path.split('\\')[-1])
+        obj_zipfile.close()
+        return True
+    except:
+        return False
+
+def pandas_df_to_excel(df, strFilePath, strSheet, blnHeader, blnIndex):
+    """Saves Pandas dataframe to excel"""
+    strFilePath = str(strFilePath)
+    strSheet = str(strSheet)
+    if os.path.exists(strFilePath):
+        objExcel = win32com.client.DispatchEx('Excel.Application')
+        objWb = objExcel.Workbooks.Open(Filename = strFilePath)
+        objWb.Sheets(strSheet).Cells.ClearContents()
+        objWb.Save()
+        objExcel.Quit()
+        del objExcel
+        
+    objExcel = pd.ExcelWriter(strFilePath)
+    df.to_excel(objExcel, strSheet, header = blnHeader, index = blnIndex)
+    objExcel.save()
+    del objExcel
+
+def in_str(strSubString, strFullString, blnCaseSensitive):
+    if blnCaseSensitive:
+        return (str(strSubString) in str(strFullString))
+    else:
+        return (str(strSubString).upper() in str(strFullString).upper())
+    
+def in_str_multi(lstSubStrings, strFullString, blnCaseSensitive):
+    if blnCaseSensitive:
+        return any(str(subString) in str(strFullString) for subString in lstSubStrings)
+    else:
+        return any(str(subString).upper() in str(strFullString).upper() for subString in lstSubStrings)
+        
+def is_numeric(string):
+    try:
+        float(string)
+        return True
+    except ValueError:
+        return False
+    
+def fibonacci_number(n):
+    dic = {}
+    for i in range(1, n+1):
+        if i == 1 or i ==2:
+            dic[i] = 1
+        else:
+            dic[i] = dic[i-1] + dic[i-2]
+            
+    return dic[n]
+
+def convert_encoding(data, newCoding = 'UTF-8'):
+    encoding = cchardet.detect(data)['encoding']
+    if newCoding.upper() != encoding.upper():
+        data = data.decode(encoding, data).encode(newCoding)
+        
+    return data
+    
+if __name__ == '__main__':
+    pass
